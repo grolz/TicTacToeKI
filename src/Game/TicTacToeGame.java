@@ -5,9 +5,9 @@ public class TicTacToeGame {
 	private String currentSymbol;
 	private Board board;
 
-	public TicTacToeGame() {
+	public TicTacToeGame(Board board) {
 		this.currentSymbol = Cell.CROSS;
-		this.board = new Board();
+		this.board = board;
 	}
 
 	public String nextSymbol() {
@@ -21,9 +21,10 @@ public class TicTacToeGame {
 		}
 	}
 
-	public void makeMove(int i, int j, String symbol) {
-		this.board.setXYPosition(i, j, symbol);
+	public Board makeMove(int i, int j, String symbol) {
+		this.board.setSymbolAt(i, j, symbol);
 		this.currentSymbol = this.nextSymbol();
+		return board;
 	}
 
 	public Board getBoard() {

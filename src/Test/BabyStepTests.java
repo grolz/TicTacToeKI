@@ -15,9 +15,9 @@ public class BabyStepTests {
 
 		Board board = new Board();
 
-		board.setXYPosition(0, 0, Cell.CIRCLE);
+		board.setSymbolAt(0, 0, Cell.CIRCLE);
 
-		Assert.assertEquals(Cell.CIRCLE, board.getXYPosition(0, 0));
+		Assert.assertEquals(Cell.CIRCLE, board.getSymbolAt(0, 0));
 
 	}
 
@@ -26,9 +26,9 @@ public class BabyStepTests {
 
 		Board board = new Board();
 
-		board.setXYPosition(0, 0, Cell.CROSS);
+		board.setSymbolAt(0, 0, Cell.CROSS);
 
-		Assert.assertEquals(Cell.CROSS, board.getXYPosition(0, 0));
+		Assert.assertEquals(Cell.CROSS, board.getSymbolAt(0, 0));
 
 	}
 
@@ -36,9 +36,9 @@ public class BabyStepTests {
 	public void givenACircleAt00AndaCrossAt01getXPosition00ShouldReturnACircle() {
 		Board board = new Board();
 
-		board.setXYPosition(0, 0, Cell.CIRCLE);
-		board.setXYPosition(0, 1, Cell.CROSS);
-		Assert.assertEquals(Cell.CIRCLE, board.getXYPosition(0, 0));
+		board.setSymbolAt(0, 0, Cell.CIRCLE);
+		board.setSymbolAt(0, 1, Cell.CROSS);
+		Assert.assertEquals(Cell.CIRCLE, board.getSymbolAt(0, 0));
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class BabyStepTests {
 
 		Board board = new Board();
 
-		Assert.assertEquals(Cell.EMPTY, board.getXYPosition(0, 0));
+		Assert.assertEquals(Cell.EMPTY, board.getSymbolAt(0, 0));
 	}
 	
 	@Test
@@ -60,6 +60,25 @@ public class BabyStepTests {
 	public void givenABoardTheContentAsListShouldHave9Elements() throws Exception {
 		Board board = new Board();
 		Assert.assertEquals( 9,board.getContentAsList().size());
+	}
+	
+	@Test
+	public void givenInitialBoardACellAt10ShouldBeInTheListOfEMPTYCells() throws Exception {
+		Board board = new Board();
+		
+		Cell an_empty_cell = board.getCellAt(1, 0);
+		
+		Assert.assertTrue(board.getFreeCells().contains(an_empty_cell));		
+	}
+	
+	@Test
+	public void givenInitialBoardACellSetToCIRCLEAt10ShouldNotBeInTheListOfEMPTYCells() throws Exception {
+		Board board = new Board();
+		
+		board.setSymbolAt(1, 0, Cell.CIRCLE);
+		Cell an_empty_cell = board.getCellAt(1, 0);
+		
+		Assert.assertFalse(board.getFreeCells().contains(an_empty_cell));		
 	}
 
 }
