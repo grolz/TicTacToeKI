@@ -17,6 +17,15 @@ public class Board {
 		}
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Board))
+			return false;
+		Board objBoard = (Board) obj;
+
+		return this.getContentAsList().equals(objBoard.getContentAsList());
+	}
+
 	public void setSymbolAt(int i, int j, String newContent) {
 		this.content[i][j].setSymbol(newContent);
 
@@ -50,9 +59,67 @@ public class Board {
 
 	public void printBoard() {
 		for (Cell cell : this.getContentAsList())
-			System.out.print(cell.getSymbol() + "|");
-		
+			System.out.print("(" + cell.get_i_position() + "," + cell.get_j_position() + "," + cell.getSymbol() + ")");
+
 		System.out.println();
+	}
+
+	public Board copyBoard() {
+		Board board_copy = new Board();
+		for (Cell cell : this.getContentAsList()) {
+			board_copy.setSymbolAt(cell.get_i_position(), cell.get_j_position(), cell.getSymbol());
+		}
+		return board_copy;
+	}
+
+	public String[] getRow(int i) {
+		String[] row = { this.content[i][0].getSymbol(), this.content[i][1].getSymbol(),
+				this.content[i][2].getSymbol() };
+		return row;
+
+	}
+
+	public String[] getColumn(int i) {
+		String[] column = { this.content[0][i].getSymbol(), this.content[1][i].getSymbol(),
+				this.content[2][i].getSymbol() };
+		return column;
+	}
+
+	public String[] getDiagonalDown() {
+		String[] diagonal = { this.content[0][0].getSymbol(), this.content[1][1].getSymbol(),
+				this.content[2][2].getSymbol() };
+		return diagonal;
+	}
+
+	public String[] getDiagonalUp() {
+		String[] diagonal = { this.content[2][0].getSymbol(), this.content[1][1].getSymbol(),
+				this.content[0][2].getSymbol() };
+		return diagonal;
+	}
+
+	public void checkThreeInLine(String[] row) throws FoundException {
+
+		if (row[0].equals(row[1]) && row[0].equals(row[2]) && !row[0].equals(Cell.EMPTY)) {
+			throw new FoundException(row[0]);
+		}
+
+	}
+
+	public String checkForWinner() {
+
+		try {
+			for (int i = 0; i < 3; i++) {
+				checkThreeInLine(getRow(i));
+				checkThreeInLine(getColumn(i));
+			}
+
+			checkThreeInLine(getDiagonalDown());
+			checkThreeInLine(getDiagonalUp());
+		} catch (FoundException e) {
+			return e.getSymbol();
+		}
+
+		return null;
 	}
 
 }

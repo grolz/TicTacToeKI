@@ -7,10 +7,10 @@ public class Cell {
 	private int j_position;
 	
 	public Cell(int index_i, int index_j) {
-		this(index_i, index_i, Cell.EMPTY);
+		this(index_i, index_j, Cell.EMPTY);
 	}
 	public Cell(int index_i, int index_j, String circle2) {
-		this.symbol = Cell.EMPTY;
+		this.symbol = circle2;
 		this.i_position = index_i;
 		this.j_position = index_j;
 	}
