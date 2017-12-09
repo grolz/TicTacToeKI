@@ -1,5 +1,7 @@
 package Test;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 
 import org.junit.Assert;
@@ -8,20 +10,20 @@ import org.junit.Test;
 
 import Game.Board;
 import Game.Cell;
-import Game.TicTacToeGame;
+import Game.TicTacToeGameStateNode;
 
-public class GameTest {
+public class TicTacToeGameStateNodeTest {
 
 	@Test
 	public void givienInitialGameFirstMoveIsCROSS() {
-		TicTacToeGame game = new TicTacToeGame(new Board(),Cell.CROSS);
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),Cell.CROSS);
 
 		Assert.assertEquals(Cell.CIRCLE, game.nextSymbol());
 	}
 
 	@Test
 	public void givenInitialGameTheSecondMoveIsCIRCLE() throws Exception {
-		TicTacToeGame game = new TicTacToeGame(new Board(),Cell.CIRCLE);
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),Cell.CIRCLE);
 		Assert.assertEquals(Cell.CROSS, game.nextSymbol());
 	}
 
@@ -42,7 +44,7 @@ public class GameTest {
 	public void MakingAMoveRequiresCoordinatesAndSymbolAndThenTheCellIsFilledWithThisSymbol()
 			throws Exception {
 		String symbol = Cell.CIRCLE;
-		TicTacToeGame game = new TicTacToeGame(new Board(),symbol);
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),symbol);
 		
 		int i = 1, j = 1;
 		Board next_Board = game.makeMove(i, j);
@@ -54,7 +56,7 @@ public class GameTest {
 	public void givenAGameAllEmptYcellsShouldBeReturned() throws Exception {
 		Board board = BoardTest.getPrparedBoard();
 		
-		TicTacToeGame game = new TicTacToeGame(board);
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(board);
 		
 		ArrayList<Cell> free_cells = board.getFreeCells();
 		
@@ -93,7 +95,7 @@ public class GameTest {
 	
 	@Test
 	public void givenAGameAllNextMovesShouldBeCreated() throws Exception {
-		TicTacToeGame game = new TicTacToeGame(BoardTest.getPrparedBoard(), Cell.CIRCLE);
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
 		
 		ArrayList<Cell> empty_cells = game.getBoard().getFreeCells();
 		ArrayList<Board> possible_Boards = new ArrayList<Board>();
@@ -104,15 +106,14 @@ public class GameTest {
 			possible_Boards.add(board);
 			
 		}
-		
-		
-	}
-
-	@Test
-	@Ignore
-	public void printBoard() throws Exception {
-		Board board = new Board();
-		board.printBoard();		
 	}
 	
+	@Test
+	public void givenABoardTheMoveMadeShouldBeReturned() throws Exception {
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
+		game.makeMove(2, 0);
+		int [] move = {2,0};
+		Assert.assertEquals(2,game.getMove()[0]);
+		Assert.assertEquals(0,game.getMove()[1]);
+	}
 }

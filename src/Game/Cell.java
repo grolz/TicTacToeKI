@@ -15,9 +15,9 @@ public class Cell {
 		this.j_position = index_j;
 	}
 	
-	public static final String CIRCLE = "Circle";
-	public static final String CROSS = "Cross";
-	public static final String EMPTY = "Empty";
+	public static final String CIRCLE = "O";
+	public static final String CROSS = "X";
+	public static final String EMPTY = " ";
 
 	public void setSymbol(String newContent) {
 		this.symbol = newContent;
@@ -43,5 +43,10 @@ public class Cell {
 		return this.i_position == cellObject.get_i_position() &&
 				this.j_position == cellObject.get_j_position() &&
 				this.symbol == cellObject.getSymbol();
+	}
+	public static int getSymbolAsInt(String symbol) {
+		if (symbol.equals(Cell.CIRCLE))
+			return 0;
+		return 1;
 	}
 }

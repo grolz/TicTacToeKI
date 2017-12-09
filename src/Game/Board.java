@@ -5,9 +5,10 @@ import java.util.Arrays;
 
 public class Board {
 
-	boolean alreadySet = false;
-
 	private Cell[][] content = new Cell[3][3];
+
+	private int winner_circle;
+	private int winner_cross;
 
 	public Board() {
 		for (int index_i = 0; index_i < content.length; index_i++) {
@@ -63,6 +64,17 @@ public class Board {
 
 		System.out.println();
 	}
+	
+	public void printBoardAsGraphic()
+	{
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				System.out.print(this.getCellAt(i, j).getSymbol()+" ");
+			}
+			System.out.println("");
+		}
+		System.out.println("---------");
+	}
 
 	public Board copyBoard() {
 		Board board_copy = new Board();
@@ -73,33 +85,39 @@ public class Board {
 	}
 
 	public String[] getRow(int i) {
-		String[] row = { this.content[i][0].getSymbol(), this.content[i][1].getSymbol(),
+		String[] row = { this.content[i][0].getSymbol(), 
+				this.content[i][1].getSymbol(),
 				this.content[i][2].getSymbol() };
 		return row;
 
 	}
 
 	public String[] getColumn(int i) {
-		String[] column = { this.content[0][i].getSymbol(), this.content[1][i].getSymbol(),
+		String[] column = { this.content[0][i].getSymbol(), 
+				this.content[1][i].getSymbol(),
 				this.content[2][i].getSymbol() };
 		return column;
 	}
 
 	public String[] getDiagonalDown() {
-		String[] diagonal = { this.content[0][0].getSymbol(), this.content[1][1].getSymbol(),
+		String[] diagonal = { this.content[0][0].getSymbol(), 
+				this.content[1][1].getSymbol(),
 				this.content[2][2].getSymbol() };
 		return diagonal;
 	}
 
 	public String[] getDiagonalUp() {
-		String[] diagonal = { this.content[2][0].getSymbol(), this.content[1][1].getSymbol(),
+		String[] diagonal = { this.content[2][0].getSymbol(), 
+				this.content[1][1].getSymbol(),
 				this.content[0][2].getSymbol() };
 		return diagonal;
 	}
 
 	public void checkThreeInLine(String[] row) throws FoundException {
 
-		if (row[0].equals(row[1]) && row[0].equals(row[2]) && !row[0].equals(Cell.EMPTY)) {
+		if (row[0].equals(row[1]) && 
+			row[0].equals(row[2]) && 
+		   !row[0].equals(Cell.EMPTY)) {
 			throw new FoundException(row[0]);
 		}
 
@@ -116,10 +134,32 @@ public class Board {
 			checkThreeInLine(getDiagonalDown());
 			checkThreeInLine(getDiagonalUp());
 		} catch (FoundException e) {
-			return e.getSymbol();
+			String winner = e.getSymbol();
+			setWinnerCounter(winner);
+//			printBoardAsGraphic();
+//			System.out.println(winner);
+			return winner;
 		}
 
 		return null;
+	}
+
+	private void setWinnerCounter(String winner) {
+		switch (winner){
+			case Cell.CIRCLE:
+				this.winner_circle++;
+				break;
+			case Cell.CROSS:
+				this.winner_cross++;
+		}
+	}
+
+	public int getWinnerCircle() {
+		return this.winner_circle;
+	}
+
+	public int getWinnerCross() {
+		return this.winner_cross;
 	}
 
 }
