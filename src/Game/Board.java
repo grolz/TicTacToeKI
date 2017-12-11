@@ -7,8 +7,7 @@ public class Board {
 
 	private Cell[][] content = new Cell[3][3];
 
-	private int winner_circle;
-	private int winner_cross;
+	private String winner;
 
 	public Board() {
 		for (int index_i = 0; index_i < content.length; index_i++) {
@@ -134,30 +133,14 @@ public class Board {
 			checkThreeInLine(getDiagonalDown());
 			checkThreeInLine(getDiagonalUp());
 		} catch (FoundException e) {
-			String winner = e.getSymbol();
-			setWinnerCounter(winner);
-			return winner;
+			this.winner = e.getSymbol();
+			return getWinner();
 		}
 
 		return null;
 	}
 
-	private void setWinnerCounter(String winner) {
-		switch (winner){
-			case Cell.CIRCLE:
-				this.winner_circle++;
-				break;
-			case Cell.CROSS:
-				this.winner_cross++;
-		}
+	public String getWinner() {
+		return this.winner;
 	}
-
-	public int getWinnerCircle() {
-		return this.winner_circle;
-	}
-
-	public int getWinnerCross() {
-		return this.winner_cross;
-	}
-
 }

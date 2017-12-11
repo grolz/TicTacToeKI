@@ -67,7 +67,8 @@ public class TicTacToeGameStateNode {
 	}
 
 	public Collection<? extends TicTacToeGameStateNode> getAllNextMoves() {
-		if (getBoard().checkForWinner() == null)
+		String winner = getBoard().checkForWinner();
+		if (winner == null)
 		{
 			ArrayList<Cell> empty_cells = this.board.getFreeCells();
 			for (Cell cell : empty_cells) {
@@ -76,8 +77,7 @@ public class TicTacToeGameStateNode {
 				next_moves.add(new TicTacToeGameStateNode(next_board, this.nextSymbol()));
 			}
 		} else {
-			this.circle_win = getBoard().getWinnerCircle();
-			this.cross_win = getBoard().getWinnerCross();
+			this.setWinnerCounter(winner);
 		}
 		return next_moves;
 	}
@@ -118,5 +118,15 @@ public class TicTacToeGameStateNode {
 			}
 		}
 		return null;
+	}
+
+	private void setWinnerCounter(String winner) {
+		switch (winner){
+			case Cell.CIRCLE:
+				this.circle_win++;
+				break;
+			case Cell.CROSS:
+				this.cross_win++;
+		}
 	}	
 }
