@@ -136,8 +136,6 @@ public class Board {
 		} catch (FoundException e) {
 			String winner = e.getSymbol();
 			setWinnerCounter(winner);
-//			printBoardAsGraphic();
-//			System.out.println(winner);
 			return winner;
 		}
 
