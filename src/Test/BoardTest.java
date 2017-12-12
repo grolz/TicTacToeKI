@@ -152,24 +152,7 @@ public class BoardTest {
 		Assert.assertEquals(Cell.CIRCLE, board.checkForWinner());
 	}
 	
-	@Test
-	public void givenABoardWithCIRCLEWinnungTheBoardshouldGiveBackWinner_circleAsOne() throws Exception {
-		Board board = getPrparedBoard();
-		board.checkForWinner();
-		Assert.assertEquals(1, board.getWinnerCircle());
-	}
 	
-
-	@Test
-	public void givenABoardWithCROSSWinnungTheBoardshouldGiveBackWinner_circleAsOne() throws Exception {
-		Board board = getPrparedBoard();
-		board.setSymbolAt(2, 2, Cell.CROSS);
-		board.setSymbolAt(1, 2, Cell.CROSS);
-		board.printBoard();
-		board.checkForWinner();
-		Assert.assertEquals(1, board.getWinnerCross());
-	}
-
 	@Test
 	public void printBoard() throws Exception {
 		Board board = new Board();

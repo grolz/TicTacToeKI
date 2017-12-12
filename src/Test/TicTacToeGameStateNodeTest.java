@@ -26,6 +26,25 @@ public class TicTacToeGameStateNodeTest {
 		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),Cell.CIRCLE);
 		Assert.assertEquals(Cell.CROSS, game.nextSymbol());
 	}
+	
+	@Test
+	public void givenABoardWithCIRCLEWinnungTheBoardshouldGiveBackCIRCLE() throws Exception {
+		Board board = BoardTest.getPrparedBoard();
+		TicTacToeGameStateNode gameNode = new TicTacToeGameStateNode(board);
+		board.checkForWinner();
+		Assert.assertEquals(Cell.CIRCLE, gameNode.getWinner());
+	}
+	
+
+	@Test
+	public void givenABoardWithCROSSWinnungTheBoardshouldGiveBackWinnerCROSS() throws Exception {
+		Board board = BoardTest.getPrparedBoard();
+		board.setSymbolAt(2, 2, Cell.CROSS);
+		board.setSymbolAt(1, 2, Cell.CROSS);
+		TicTacToeGameStateNode gameNode = new TicTacToeGameStateNode(board);
+		board.checkForWinner();
+		Assert.assertEquals(Cell.CROSS, gameNode.getBoard().getWinner());
+	}
 
 	@Test
 	public void givenInitialGameAfterFirstMoveTheFilledCellIsNotPartOfTheEmptyCells()
@@ -112,8 +131,18 @@ public class TicTacToeGameStateNodeTest {
 	public void givenABoardTheMoveMadeShouldBeReturned() throws Exception {
 		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
 		game.makeMove(2, 0);
-		int [] move = {2,0};
 		Assert.assertEquals(2,game.getMove()[0]);
 		Assert.assertEquals(0,game.getMove()[1]);
+	}
+	
+	@Test
+	public void givenAGameNodeGetBackBestMoveForCross() throws Exception {
+		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
+		game.getBoard().setSymbolAt(2, 2, Cell.EMPTY);
+		game.generateTreeForBoard();
+		TicTacToeGameStateNode nextGame = game.getBestMoveFor(Cell.CROSS);
+		int[] move = nextGame.getMove();
+		Assert.assertEquals(2,game.getMove()[0]);
+		Assert.assertEquals(2,game.getMove()[1]);
 	}
 }

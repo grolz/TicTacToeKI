@@ -9,27 +9,10 @@ public class TicTacToeGameStateNode {
 
 	private String currentSymbol;
 	private Board board;
-	private int circle_win = 0;
-	private int cross_win = 0;
 	private int move_i;
 	private int move_j;
 	private ArrayList<TicTacToeGameStateNode> next_moves = new ArrayList<>();
-
-	public int getCircle_win() {
-		return circle_win;
-	}
-
-	public void countUpCircle_win() {
-		this.circle_win++;
-	}
-
-	public int getCross_win() {
-		return cross_win;
-	}
-
-	public void countUpCross_win() {
-		this.cross_win++;
-	}
+	private String winner;
 
 	public TicTacToeGameStateNode(Board board) {
 		this(board, Cell.CIRCLE) ;
@@ -76,9 +59,7 @@ public class TicTacToeGameStateNode {
 
 				next_moves.add(new TicTacToeGameStateNode(next_board, this.nextSymbol()));
 			}
-		} else {
-			this.setWinnerCounter(winner);
-		}
+		} 
 		return next_moves;
 	}
 
@@ -89,26 +70,17 @@ public class TicTacToeGameStateNode {
 	
 	public TicTacToeGameStateNode getBestMoveFor(String symbol)
 	{
-		int symbolAsInt = Cell.getSymbolAsInt(symbol);
 		TicTacToeGameStateNode best_move = null;
-		if (this.next_moves.size()>0) {
+		if (this.next_moves.size() > 0) {
 			best_move = this.next_moves.get(0);
 			for (TicTacToeGameStateNode gameNode : next_moves) {
-				if (best_move.getCross_win() < gameNode.getCross_win())
-				{
+				if (symbol.equals(gameNode.getWinner()) ||
+					null == gameNode.getWinner()) {
 					best_move = gameNode;
 				}
 			}
 		}
 		return best_move;
-	}
-
-	public void setCircle_win(int circle_win) {
-		this.circle_win = circle_win;
-	}
-
-	public void setCross_win(int cross_win) {
-		this.cross_win = cross_win;
 	}
 
 	public TicTacToeGameStateNode findGameNode(Board newBoard) {
@@ -120,13 +92,15 @@ public class TicTacToeGameStateNode {
 		return null;
 	}
 
-	private void setWinnerCounter(String winner) {
-		switch (winner){
-			case Cell.CIRCLE:
-				this.circle_win++;
-				break;
-			case Cell.CROSS:
-				this.cross_win++;
+	
+	public void generateTreeForBoard() {
+		for (TicTacToeGameStateNode nextGameNode : this.getAllNextMoves())
+		{			
+			nextGameNode.generateTreeForBoard();
 		}
+	}
+
+	public String getWinner() {
+		return board.getWinner();
 	}	
 }
