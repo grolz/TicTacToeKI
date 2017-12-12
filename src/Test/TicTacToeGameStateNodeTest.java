@@ -10,27 +10,27 @@ import org.junit.Test;
 
 import Game.Board;
 import Game.Cell;
-import Game.TicTacToeGameStateNode;
+import Game.GameNode;
 
 public class TicTacToeGameStateNodeTest {
 
 	@Test
 	public void givienInitialGameFirstMoveIsCROSS() {
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),Cell.CROSS);
+		GameNode game = new GameNode(new Board(),Cell.CROSS);
 
 		Assert.assertEquals(Cell.CIRCLE, game.nextSymbol());
 	}
 
 	@Test
 	public void givenInitialGameTheSecondMoveIsCIRCLE() throws Exception {
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),Cell.CIRCLE);
+		GameNode game = new GameNode(new Board(),Cell.CIRCLE);
 		Assert.assertEquals(Cell.CROSS, game.nextSymbol());
 	}
 	
 	@Test
 	public void givenABoardWithCIRCLEWinnungTheBoardshouldGiveBackCIRCLE() throws Exception {
 		Board board = BoardTest.getPrparedBoard();
-		TicTacToeGameStateNode gameNode = new TicTacToeGameStateNode(board);
+		GameNode gameNode = new GameNode(board);
 		board.checkForWinner();
 		Assert.assertEquals(Cell.CIRCLE, gameNode.getWinner());
 	}
@@ -41,7 +41,7 @@ public class TicTacToeGameStateNodeTest {
 		Board board = BoardTest.getPrparedBoard();
 		board.setSymbolAt(2, 2, Cell.CROSS);
 		board.setSymbolAt(1, 2, Cell.CROSS);
-		TicTacToeGameStateNode gameNode = new TicTacToeGameStateNode(board);
+		GameNode gameNode = new GameNode(board);
 		board.checkForWinner();
 		Assert.assertEquals(Cell.CROSS, gameNode.getBoard().getWinner());
 	}
@@ -63,7 +63,7 @@ public class TicTacToeGameStateNodeTest {
 	public void MakingAMoveRequiresCoordinatesAndSymbolAndThenTheCellIsFilledWithThisSymbol()
 			throws Exception {
 		String symbol = Cell.CIRCLE;
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),symbol);
+		GameNode game = new GameNode(new Board(),symbol);
 		
 		int i = 1, j = 1;
 		Board next_Board = game.makeMove(i, j);
@@ -75,7 +75,7 @@ public class TicTacToeGameStateNodeTest {
 	public void givenAGameAllEmptYcellsShouldBeReturned() throws Exception {
 		Board board = BoardTest.getPrparedBoard();
 		
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(board);
+		GameNode game = new GameNode(board);
 		
 		ArrayList<Cell> free_cells = board.getFreeCells();
 		
@@ -114,14 +114,14 @@ public class TicTacToeGameStateNodeTest {
 	
 	@Test
 	public void givenAGameAllNextMovesShouldBeCreated() throws Exception {
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
+		GameNode game = new GameNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
 		
 		ArrayList<Cell> empty_cells = game.getBoard().getFreeCells();
 		ArrayList<Board> possible_Boards = new ArrayList<Board>();
 		for (Cell cell : empty_cells)
 		{
 			Board board = game.makeMove(cell.get_i_position(), cell.get_j_position());
-			board.printBoard();
+			board.printBoardAsGraphic();
 			possible_Boards.add(board);
 			
 		}
@@ -129,7 +129,7 @@ public class TicTacToeGameStateNodeTest {
 	
 	@Test
 	public void givenABoardTheMoveMadeShouldBeReturned() throws Exception {
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
+		GameNode game = new GameNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
 		game.makeMove(2, 0);
 		Assert.assertEquals(2,game.getMove()[0]);
 		Assert.assertEquals(0,game.getMove()[1]);
@@ -137,12 +137,22 @@ public class TicTacToeGameStateNodeTest {
 	
 	@Test
 	public void givenAGameNodeGetBackBestMoveForCross() throws Exception {
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
+		GameNode game = new GameNode(BoardTest.getPrparedBoard(), Cell.CIRCLE);
 		game.getBoard().setSymbolAt(2, 2, Cell.EMPTY);
+		game.getBoard().setSymbolAt(1, 1, Cell.EMPTY);
 		game.generateTreeForBoard();
-		TicTacToeGameStateNode nextGame = game.getBestMoveFor(Cell.CROSS);
-		int[] move = nextGame.getMove();
-		Assert.assertEquals(2,game.getMove()[0]);
-		Assert.assertEquals(2,game.getMove()[1]);
+		for (GameNode gameNode : game.getNextMoves()) {
+			System.out.print(gameNode.getWinner() + " |");			
+		}
+	}
+	
+	@Test
+	public void givenAnInitlaBoardPrintWinner() throws Exception {
+		GameNode gameNode = new GameNode(new Board(),Cell.CIRCLE);
+		GameNode nextNode = new GameNode(gameNode.makeMove(0, 0),gameNode.nextSymbol());
+		nextNode.generateTreeForBoard();
+		for (GameNode nextMove : nextNode.getNextMoves()) {
+			System.out.print(nextMove.getWinner() + " |");			
+		}
 	}
 }

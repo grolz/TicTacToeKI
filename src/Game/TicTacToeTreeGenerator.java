@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class TicTacToeTreeGenerator {
 
 	public static void main(String[] args) {
-		TicTacToeGameStateNode game = new TicTacToeGameStateNode(new Board(),Cell.CIRCLE);
+		GameNode game = new GameNode(new Board(),Cell.CIRCLE);
 		System.out.print("generating");
 		
 		game.generateTreeForBoard();
@@ -14,19 +14,19 @@ public class TicTacToeTreeGenerator {
 		play(game);
 	}
 
-	private static void play(TicTacToeGameStateNode game) {
+	private static void play(GameNode game) {
 		game.getBoard().printBoardAsGraphic();
 		Scanner scanner = new Scanner(System.in);
 		String moveAsString = scanner.next();
 				
 		String[] move = moveAsString.split(",");
 		Board newBoard = game.makeMove(Integer.valueOf(move[0]).intValue(), Integer.valueOf(move[1]).intValue());
-		TicTacToeGameStateNode nextNode = game.findGameNode(newBoard);
+		GameNode nextNode = game.findGameNode(newBoard);
 		play(nextNode.getBestMoveFor(game.nextSymbol()));
 	}
 
-	private static void printData(TicTacToeGameStateNode game) {
-		for (TicTacToeGameStateNode gameNode : game.getAllNextMoves()) {
+	private static void printData(GameNode game) {
+		for (GameNode gameNode : game.generateNextMoves()) {
 			gameNode.getBoard().printBoardAsGraphic();
 			gameNode.getBestMoveFor(Cell.CIRCLE);
 			printData(gameNode);
@@ -34,7 +34,7 @@ public class TicTacToeTreeGenerator {
 		
 	}
 
-	private static void generateTree(TicTacToeGameStateNode game) {
+	private static void generateTree(GameNode game) {
 		game.generateTreeForBoard();		
 	}
 	

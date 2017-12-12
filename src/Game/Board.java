@@ -134,10 +134,9 @@ public class Board {
 			checkThreeInLine(getDiagonalUp());
 		} catch (FoundException e) {
 			this.winner = e.getSymbol();
-			return getWinner();
 		}
 
-		return null;
+		return this.winner;
 	}
 
 	public String getWinner() {
