@@ -7,7 +7,7 @@ public class TicTacToeTreeGenerator {
 
 	public static void main(String[] args) {
 		GameNode game = new GameNode(new Board(),Cell.CIRCLE);
-		System.out.print("generating");
+		System.out.println("generating");
 		
 		game.generateTreeForBoard();
 		
@@ -17,10 +17,12 @@ public class TicTacToeTreeGenerator {
 	private static void play(GameNode game) {
 		game.getBoard().printBoardAsGraphic();
 		Scanner scanner = new Scanner(System.in);
-		String moveAsString = scanner.next();
-				
-		String[] move = moveAsString.split(",");
-		Board newBoard = game.makeMove(Integer.valueOf(move[0]).intValue(), Integer.valueOf(move[1]).intValue());
+		String[] move = null;
+		do {
+			String moveAsString = scanner.next();
+			move = moveAsString.split(",");
+		} while (!(Cell.EMPTY.equals(game.getBoard().getCellAt(move).getSymbol())));
+		Board newBoard = game.makeMove(move);
 		GameNode nextNode = game.findGameNode(newBoard);
 		play(nextNode.getBestMoveFor(game.nextSymbol()));
 	}

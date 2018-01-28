@@ -56,6 +56,10 @@ public class Board {
 	public Cell getCellAt(int i, int j) {
 		return content[i][j];
 	}
+	
+	public Cell getCellAt(String[] coordinatesAsArray){
+		return getCellAt(Integer.valueOf(coordinatesAsArray[0]).intValue(),Integer.valueOf(coordinatesAsArray[1]).intValue());
+	}
 
 	public void printBoard() {
 		for (Cell cell : this.getContentAsList())
@@ -119,7 +123,6 @@ public class Board {
 		   !row[0].equals(Cell.EMPTY)) {
 			throw new FoundException(row[0]);
 		}
-
 	}
 
 	public String checkForWinner() {
@@ -140,6 +143,6 @@ public class Board {
 	}
 
 	public String getWinner() {
-		return this.winner;
+		return checkForWinner();
 	}
 }

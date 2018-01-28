@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,7 +34,6 @@ public class TicTacToeGameStateNodeTest {
 	public void givenABoardWithCIRCLEWinnungTheBoardshouldGiveBackCIRCLE() throws Exception {
 		Board board = BoardTest.getPrparedBoard();
 		GameNode gameNode = new GameNode(board);
-		board.checkForWinner();
 		Assert.assertEquals(Cell.CIRCLE, gameNode.getWinner());
 	}
 	
@@ -42,7 +44,6 @@ public class TicTacToeGameStateNodeTest {
 		board.setSymbolAt(2, 2, Cell.CROSS);
 		board.setSymbolAt(1, 2, Cell.CROSS);
 		GameNode gameNode = new GameNode(board);
-		board.checkForWinner();
 		Assert.assertEquals(Cell.CROSS, gameNode.getBoard().getWinner());
 	}
 
@@ -142,7 +143,8 @@ public class TicTacToeGameStateNodeTest {
 		game.getBoard().setSymbolAt(1, 1, Cell.EMPTY);
 		game.generateTreeForBoard();
 		for (GameNode gameNode : game.getNextMoves()) {
-			System.out.print(gameNode.getWinner() + " |");			
+			gameNode.getBoard().printBoardAsGraphic();
+			System.out.println(gameNode.getWinner() + " |");			
 		}
 	}
 	
@@ -152,7 +154,15 @@ public class TicTacToeGameStateNodeTest {
 		GameNode nextNode = new GameNode(gameNode.makeMove(0, 0),gameNode.nextSymbol());
 		nextNode.generateTreeForBoard();
 		for (GameNode nextMove : nextNode.getNextMoves()) {
+			gameNode.getBoard().printBoardAsGraphic();
 			System.out.print(nextMove.getWinner() + " |");			
 		}
+	}
+	
+	@Test
+	public void givenABoardthenCalculateTheWinnerRatios() {
+		GameNode gameNode = new GameNode(BoardTest.getPrparedBoard(),Cell.CIRCLE);
+		gameNode.generateTreeForBoard();
+		MatcherAssert.assertThat(gameNode.getCircleWinnerSum() > gameNode.getCrossWinnerSum(), CoreMatchers.is(true));
 	}
 }
